@@ -24,9 +24,15 @@ app.use('/', express.static(path.join(__dirname, "public", "static")));
 
 
 app.post('/api/register',async (req, res) => {
-    console.log(req.body)
-    
     const { username, password: plainTextPassword, firstname, lastname, birthday } = req.body
+
+    if(!/^[a-zA-Z][a-zA-Z]+/.test(username)) return res.json({status: 'error', error: 'Username should have english characters at first'})
+
+    if(!/^[a-zA-Z][a-zA-Z]+/.test(plainTextPassword)) return res.json({status: 'error', error: 'Password should have english characters at first'})
+
+    if(username.length < 6) return res.json({status: 'error', error: 'Username should be atleast 6 characters'})
+
+    if(plainTextPassword.length < 6) return res.json({status: 'error', error: 'Password should be atleast 6 characters'})
 
     const password = await bcrypt.hash(plainTextPassword, 10)
 
@@ -38,10 +44,15 @@ app.post('/api/register',async (req, res) => {
             lastname,
             birthday
         })
-        console.log('User create successfully',response);
+        console.log('User create successfully : ',response);
     } catch(error) {
-        console.log(error)
-        return res.json({status: 'error'})
+        //JSON.stringify to check type of error
+        if(error.code === 11000) {
+            //duplicate key
+            console.log({status: 'error', error: 'Username already in use'})
+            return res.json({status: 'error', error: 'Username already in use'});
+        }
+        throw error
     }
 
     res.json({ status: "ok" })

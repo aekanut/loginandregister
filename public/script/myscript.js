@@ -23,6 +23,12 @@ async function registerUser(event) {
         })
     }).then((res) => res.json())
 
+    if(result.status === "ok") {
+        //ok 
+        alert("Success")
+    } else {
+        alert(result.error)
+    }
 }
 
 const loginForm = document.getElementById('login-form')
