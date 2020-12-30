@@ -34,21 +34,28 @@ async function registerUser(event) {
 const loginForm = document.getElementById('login-form')
 loginForm.addEventListener('submit', loginUser)
 
-function loginUser(event) {
+async function loginUser(event) {
     event.preventDefault()
     const username = document.getElementById('loginusername').value
     const password = document.getElementById('loginpassword').value
 
-
-    const result = fetch('/api/login', {
+    const result = await fetch('/api/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
             username,
-            password,
+            password
         })
     }).then((res) => res.json())
 
+    if(result.status === "ok") {
+        //ok 
+        alert("Success")
+        localStorage.setItem('token', result.data)
+    } else {
+        alert(result.error)
+    }
 }
+
