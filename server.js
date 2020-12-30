@@ -14,10 +14,20 @@ mongoose.connect('mongodb://localhost:27017/newdatabase', {
     useCreateIndex: true
 })
 
+//for css
+app.use('/public/stylesheets', express.static(path.join(__dirname, "public", "stylesheets")));
+//for script
+app.use('/public/script', express.static(path.join(__dirname, "public", "script")));
+//for index
 app.use('/', express.static(path.join(__dirname, "public", "static")));
 
 
 app.post('/api/register', (req, res) => {
+    console.log(req.body)
+    res.json({ status: "ok"})
+})
+
+app.post('/api/login', (req, res) => {
     console.log(req.body)
     res.json({ status: "ok"})
 })
