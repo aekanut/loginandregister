@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const mongoose = require("mongoose")
 const user = require("./public/model/user")
+const bcrypt = require('bcryptjs')
 
 const app = express();
 
@@ -22,14 +23,34 @@ app.use('/public/script', express.static(path.join(__dirname, "public", "script"
 app.use('/', express.static(path.join(__dirname, "public", "static")));
 
 
-app.post('/api/register', (req, res) => {
+app.post('/api/register',async (req, res) => {
     console.log(req.body)
-    res.json({ status: "ok"})
+    
+    const { username, password: plainTextPassword, firstname, lastname, birthday } = req.body
+
+    const password = await bcrypt.hash(plainTextPassword, 10)
+
+    try {
+        const response = await user.create({
+            username,
+            password,
+            firstname,
+            lastname,
+            birthday
+        })
+        console.log('User create successfully',response);
+    } catch(error) {
+        console.log(error)
+        return res.json({status: 'error'})
+    }
+
+    res.json({ status: "ok" })
 })
 
 app.post('/api/login', (req, res) => {
-    console.log(req.body)
-    res.json({ status: "ok"})
+   
+    console.log(check)
+    res.json({ status: "ok" })
 })
 
 app.listen(3000, () => {

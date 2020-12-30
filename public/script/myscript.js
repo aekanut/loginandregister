@@ -1,7 +1,7 @@
 const registerForm = document.getElementById('reg-form')
 registerForm.addEventListener('submit', registerUser)
 
-function registerUser(event) {
+async function registerUser(event) {
     event.preventDefault()
     const username = document.getElementById('username').value
     const password = document.getElementById('password').value
@@ -9,7 +9,7 @@ function registerUser(event) {
     const lastname = document.getElementById('lastname').value
     const birthday = document.getElementById('birthday').value
 
-    const result = fetch('/api/register', {
+    const result = await fetch('/api/register', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
