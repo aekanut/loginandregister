@@ -2,24 +2,104 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel='stylesheet' href='/public/stylesheets/style.css' />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <script src="/public/script/myscript.js"></script>
+    <style>
+        .top {
+            text-align: center;
+            font-size: 50px;
+            color: white;
+            font-family: 'Courier New', Courier, monospace;
+            background-color: rgb(19, 99, 43);
+            margin: 20px;
+            border: 4px solid black;
+            padding: 50px;
+        }
+
+        .mid {
+            font-family: 'Courier New', Courier, monospace;
+            text-align: left;
+            margin: 20px;
+            border: 4px solid black;
+            padding: 20px 0px 20px 50px;
+        }
+
+        a {
+            color: #00B7FF;
+        }
+
+        .row {
+            display: flex;
+        }
+
+        .column {
+            flex: 50%;
+        }
+    </style>
 </head>
 
 <body>
-    <h1>Registration</h1>
-    <form id="reg-form">
-        <input type="text" autocomplete="off" id="username" placeholder="Username" required/><br>
-        <input type="password" autocomplete="off" id="password" placeholder="Password" required/><br>
-        <input type="text" autocomplete="off" id="firstname" placeholder="Firstname" required/><br>
-        <input type="text" autocomplete="off" id="lastname" placeholder="Lastname" required/><br>
-        <input type="date" autocomplete="off" id="birthday" placeholder="birthday" required/><br>
-        <input type="submit" value="Submit Form" />
-    </form>
 
+    <div class="row">
+        <div class="column">
+            <h2 class="top">Login</h2>
+            <form class="mid" id="login-form">
+                <p>Username</p>
+                <input type="text" autocomplete="off" id="username" placeholder="Username" required />
+                <p>Password</p>
+                <input type="password" autocomplete="off" id="password" placeholder="Password" required />
+                <br><br>
+                <input type="submit" value="Login" />
+            </form>
+        </div>
+        <div class="column">
+            <h2 class="top">Registration</h2>
+            <form class="mid" id="reg-form">
+                <p>Username</p>
+                <input type="text" autocomplete="off" id="username" placeholder="Username" required />
+                <p>Password</p>
+                <input type="password" autocomplete="off" id="password" placeholder="Password" required />
+                <p>Firstname</p>
+                <input type="text" autocomplete="off" id="firstname" placeholder="Firstname" required />
+                <p>Lastname</p>
+                <input type="text" autocomplete="off" id="lastname" placeholder="Lastname" required />
+                <p>Birthday</p>
+                <input type="date" autocomplete="off" id="birthday" placeholder="birthday" required />
+                <br><br>
+                <input type="submit" value="Register" />
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('reg-form')
+        form.addEventListener('submit', registerUser)
+
+        function registerUser(event) {
+            event.preventDefault()
+            const username = document.getElementById('username').value
+            const password = document.getElementById('password').value
+            const firstname = document.getElementById('firstname').value
+            const lastname = document.getElementById('lastname').value
+            const birthday = document.getElementById('birthday').value
+
+            const result = fetch('/api/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username,
+                    password,
+                    firstname,
+                    lastname,
+                    birthday
+                })
+            }).then((res) => res.json())
+
+        }
+    </script>
 </body>
 
 </html>
