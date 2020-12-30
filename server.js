@@ -1,7 +1,7 @@
 const express = require("express");
 const path = require("path");
 const mongoose = require("mongoose")
-const User = require("./model/user")
+const user = require("./public/model/user")
 
 mongoose.connect('mongodb://localhost:27017/newdatabase', {
     useNewUrlParser: true,
@@ -11,11 +11,11 @@ mongoose.connect('mongodb://localhost:27017/newdatabase', {
 
 const app = express();
 
-app.use('/', express.static(path.join(__dirname, "static")));
+app.use('/', express.static(path.join(__dirname, "public", "static")));
 
 app.use(express.json());
 app.post('/api/register', (req, res) => {
-    console.log(req.body);
+    user.create
     res.json({ status: "ok"})
 })
 
