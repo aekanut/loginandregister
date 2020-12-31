@@ -8,7 +8,7 @@
     <script>
         if (localStorage.getItem('token') === null) {
             location.replace("/index.html")
-        } 
+        }
         function myFunction() {
             localStorage.removeItem('token')
         }
@@ -16,9 +16,11 @@
 </head>
 
 <body>
-    <a href="/index.html">
-        <input type="button" value="Click for logout" onclick="myFunction()">
-    </a>
+    <form id="log">
+        <a href="/index.html">
+            <input type="submit" value="Click for logout" id="out" onclick="myFunction()">
+        </a>
+    </form>
 </body>
 
 </html>
