@@ -57,6 +57,7 @@ async function loginUser(event) {
         console.log("Got the token: ", result.data)
         localStorage.setItem('token', result.data)
         alert("Success")
+        location.replace("/logout.html")
     } else {
         alert(result.error)
     }
