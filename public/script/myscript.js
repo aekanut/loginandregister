@@ -23,9 +23,10 @@ async function registerUser(event) {
         })
     }).then((res) => res.json())
 
-    if(result.status === "ok") {
+    if (result.status === "ok") {
         //ok 
-        alert("Success")
+        alert("Success");
+        location.reload()
     } else {
         alert(result.error)
     }
@@ -50,10 +51,12 @@ async function loginUser(event) {
         })
     }).then((res) => res.json())
 
-    if(result.status === "ok") {
+    if (result.status === "ok") {
         //ok 
-        alert("Success")
+
+        console.log("Got the token: ", result.data)
         localStorage.setItem('token', result.data)
+        alert("Success")
     } else {
         alert(result.error)
     }

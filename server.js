@@ -26,21 +26,12 @@ app.use('/public/script', express.static(path.join(__dirname, "public", "script"
 //for index
 app.use('/', express.static(path.join(__dirname, "public", "static")));
 
-app.post('/api/change-password', (req, res) => {
-    const { token } = req.body;
-    //JWT_SECRET for verify
-    const user = jwt.verify(token, JWT_SECRET)
-
-    console.log(user)
-    res.json({ state: "ok" })
-})
-
 app.post('/api/register', async (req, res) => {
     const { username, password: plainTextPassword, firstname, lastname, birthday } = req.body
 
-    if (!/^[a-zA-Z][a-zA-Z]+/.test(username)) return res.json({ status: 'error', error: 'Username should have english characters at first' })
+    if (!/^[a-zA-Z]/.test(username)) return res.json({ status: 'error', error: 'Username should have english characters at first' })
 
-    if (!/^[a-zA-Z][a-zA-Z]+/.test(plainTextPassword)) return res.json({ status: 'error', error: 'Password should have english characters at first' })
+    if (!/^[a-zA-Z]/.test(plainTextPassword)) return res.json({ status: 'error', error: 'Password should have english characters at first' })
 
     if (username.length < 6) return res.json({ status: 'error', error: 'Username should be atleast 6 characters' })
 
@@ -92,7 +83,7 @@ app.post('/api/login', async (req, res) => {
         )
 
         return res.json({ status: 'ok', data: token })
-    }
+    } 
     return res.json({ status: "error", error: "Invalid username/password" })
 })
 
