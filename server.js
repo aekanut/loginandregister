@@ -23,8 +23,14 @@ mongoose.connect('mongodb://localhost:27017/newdatabase', {
 app.use('/public/stylesheets', express.static(path.join(__dirname, "public", "stylesheets")));
 //for script
 app.use('/public/script', express.static(path.join(__dirname, "public", "script")));
-//for index
-app.use('/', express.static(path.join(__dirname, "public", "static")));
+
+app.get('/login-register', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'static', 'index.html' ))
+})
+
+app.get('/logout', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'static', 'logout.html' ))
+})
 
 app.post('/api/register', async (req, res) => {
     const { username, password: plainTextPassword, firstname, lastname, birthday } = req.body
@@ -97,6 +103,14 @@ app.post('/api/token', async (req, res) => {
         return res.json({status: false})
     }
 })  
+
+
+
+app.put('/api/change-password', async(req, res) => {
+    const { token, newPassword } = req.body;
+    
+    
+})
 
 app.listen(3000, () => {
     console.log("Server is running in port 3000...")

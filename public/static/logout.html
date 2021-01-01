@@ -7,7 +7,7 @@
     <title>Document</title>
     <script>
         if (localStorage.getItem('token') === null) {
-            location.replace("/index.html")
+            location.replace("/login-register")
         }
         function myFunction() {
             localStorage.removeItem('token')
@@ -17,7 +17,7 @@
 
 <body>
     <form id="log">
-        <a href="/index.html">
+        <a href="/login-register">
             <input type="submit" value="Click for logout" id="out" onclick="myFunction()">
         </a>
     </form>
