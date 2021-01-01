@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Change-password</title>
+</head>
+
+<body>
+    <form id="change">
+        <p>New Password</p>
+        <input type="password" autocomplete="off" id="newpassword" placeholder="newpassword" required /><br>
+        <input type="submit">
+    </form>
+    <script>
+        const Change = document.getElementById('change')
+        Change.addEventListener('submit', changePassword)
+
+        async function changePassword(event) {
+            event.preventDefault()
+            const newpassword = document.getElementById('newpassword').value
+            const token = localStorage.getItem('token')
+
+            const result = await fetch('/api/change-password', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    token,
+                    newpassword
+                })
+            }).then((res) => res.json())
+
+            if(result.status === "ok") {
+                alert("success");
+                location.replace("/logout")
+            } else {
+                alert(result.error)
+            }
+        }
+    </script>
+</body>
+
+
+</html>

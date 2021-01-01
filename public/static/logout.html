@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Logout</title>
     <script>
+        
         if (localStorage.getItem('token') === null) {
             location.replace("/login-register")
         }
@@ -16,11 +17,19 @@
 </head>
 
 <body>
+    <form id="changepass">
+        <a href="/change-password">
+            <input type="button" value="Click for change-password" id="change">
+        </a>
+    </form>
+    <br><br>
     <form id="log">
         <a href="/login-register">
             <input type="submit" value="Click for logout" id="out" onclick="myFunction()">
         </a>
     </form>
+
+
 </body>
 
 </html>

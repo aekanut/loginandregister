@@ -25,11 +25,15 @@ app.use('/public/stylesheets', express.static(path.join(__dirname, "public", "st
 app.use('/public/script', express.static(path.join(__dirname, "public", "script")));
 
 app.get('/login-register', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'static', 'index.html' ))
+    res.sendFile(path.join(__dirname, 'public', 'static', 'index.html'))
 })
 
 app.get('/logout', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'static', 'logout.html' ))
+    res.sendFile(path.join(__dirname, 'public', 'static', 'logout.html'))
+})
+
+app.get('/change-password', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'static', 'change.html'));
 })
 
 app.post('/api/register', async (req, res) => {
@@ -84,12 +88,12 @@ app.post('/api/login', async (req, res) => {
             {
                 id: user._id,
                 username: user.username
-            }, 
+            },
             JWT_SECRET
         )
 
         return res.json({ status: 'ok', data: token })
-    } 
+    }
     return res.json({ status: "error", error: "Invalid username/password" })
 })
 
@@ -98,19 +102,47 @@ app.post('/api/token', async (req, res) => {
     let check;
     try {
         check = jwt.verify(token, JWT_SECRET);
-        return res.json({status: true})
+        return res.json({ status: true })
     } catch {
-        return res.json({status: false})
+        return res.json({ status: false })
     }
-})  
-
-
-
-app.put('/api/change-password', async(req, res) => {
-    const { token, newPassword } = req.body;
-    
-    
 })
+
+
+
+app.put('/api/change-password', async (req, res) => {
+
+    const { token, newpassword: plainTextPassword } = req.body
+
+    if (!plainTextPassword || typeof plainTextPassword !== 'string') {
+        return res.json({ status: 'error', error: 'Invalid password' })
+    }
+
+    if (plainTextPassword.length < 5) {
+        return res.json({
+            status: 'error',
+            error: 'Password too small. Should be atleast 6 characters'
+        })
+    }
+
+    try {
+        const user = jwt.verify(token, JWT_SECRET)
+
+        const _id = user.id
+
+        const passwords = await bcrypt.hash(plainTextPassword, 10)
+
+        await User.updateOne(
+            { _id },
+            { passwords }
+        )
+        res.json({ status: 'ok' })
+    } catch (error) {
+        console.log(error)
+        res.json({ status: 'error', error: ';))' })
+    }
+})
+
 
 app.listen(3000, () => {
     console.log("Server is running in port 3000...")
