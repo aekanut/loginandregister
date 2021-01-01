@@ -6,7 +6,7 @@ const bcrypt = require('bcryptjs')
 
 const jwt = require('jsonwebtoken')
 
-const JWT_SECRET = 'asdfdsafdfdafd355dsg48/14/==-fds555asdfd53134*/*sfafasdf';
+const JWT_SECRET = 'asdfdsafdfredafd355dsg48/14/==-fds555asdfd53134*/*sfafasdf';
 
 const app = express();
 
@@ -87,6 +87,16 @@ app.post('/api/login', async (req, res) => {
     return res.json({ status: "error", error: "Invalid username/password" })
 })
 
+app.post('/api/token', async (req, res) => {
+    const { token } = req.body;
+    let check;
+    try {
+        check = jwt.verify(token, JWT_SECRET);
+        return res.json({status: true})
+    } catch {
+        return res.json({status: false})
+    }
+})  
 
 app.listen(3000, () => {
     console.log("Server is running in port 3000...")

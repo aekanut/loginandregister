@@ -63,3 +63,20 @@ async function loginUser(event) {
     }
 }
 
+const check = async (token) => {
+    const result = await fetch('/api/token', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            token
+        })
+    }).then((res) => res.json())
+
+    if(result.status) {
+        
+        location.replace("/logout.html")
+    }
+}
+check(localStorage.getItem('token'))
