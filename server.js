@@ -118,7 +118,7 @@ app.put('/api/change-password', async (req, res) => {
         return res.json({ status: 'error', error: 'Invalid password' })
     }
 
-    if (plainTextPassword.length < 5) {
+    if (plainTextPassword.length < 6) {
         return res.json({
             status: 'error',
             error: 'Password too small. Should be atleast 6 characters'
@@ -132,10 +132,12 @@ app.put('/api/change-password', async (req, res) => {
 
         const passwords = await bcrypt.hash(plainTextPassword, 10)
 
-        await User.updateOne(
-            { _id },
-            { passwords }
+        const update = await User.findByIdAndUpdate(
+            { _id: _id },
+            { password: passwords }
         )
+        console.log(update);
+
         res.json({ status: 'ok' })
     } catch (error) {
         console.log(error)
